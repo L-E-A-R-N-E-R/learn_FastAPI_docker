@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  buildAndRunContainer:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build the Docker image
+      run: docker build ./backend --file Dockerfile --tag porwalmohit1999/fastapitutorial1:tagname
+
+    - name: Login to the dockerhub
+      run: docker login -u porwalmohit1999 -p Mohit@202
+
+    - name: Push to image to the registry
+      run: docker push porwalmohit1999/fastapitutorial1:tagname
+      
+    - name: Run the Docker container
+      run: docker run -d -p 8080:80 docker.io/porwalmohit1999/fastapitutorial1:tagname
